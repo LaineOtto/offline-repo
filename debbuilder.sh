@@ -1,6 +1,6 @@
 #!/bin/bash
 echo "Make sure you run this sudoed or as root!"
-homedir="/home/lotto" #edit to be your home dir
+homedir="/home/lotto" #edit to be your home dir. if run as root ~ is /root, which isn't what I wanted
 cd $homedir
 apt install -y dh-make devscripts
 scripts="helloworld.rb" #space seperated list of scripts to package. edit the 2nd heredoc below to change acceptable script names
@@ -13,7 +13,7 @@ DEBEMAIL="person@company.tld"
 DEBFULLNAME="Person McTester"
 export DEBEMAIL DEBFULLNAME
 EOF
-. $homedir/.bashrc
+. $homedir/.bashrc #Sources the variables made in the above heredoc
 dh_make --indep --createorig -y #arch independent, create a .orig.tar.xz, assume yes. creates debian subdirectory
 touch $homedir/$scriptdir/debian/install
 cat <<EOF >$homedir/$scriptdir/debian/install #one line per script, supports globbing. format "<script> <install location>"

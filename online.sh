@@ -1,14 +1,17 @@
 #!/bin/bash
+# I use /mnt/hgfs/files because that's where vmware workstation mounts a folder called files by default
+# Change as necessary
+fileDir="/mnt/hgfs/files"
 echo "Make sure you run this sudoed or as root!"
 sleep 2
 echo "Waiting for dpkg unlock."
-/mnt/hgfs/files/dpkg-check.sh #checks if there's an apt process already running and waits for it to finish
+$fileDir/dpkg-check.sh #checks if there's an apt process already running and waits for it to finish
 apt install -y dpkg-dev apt-rdepends apache2
 mkdir -p /var/www/html/debs
 cd /var/www/html/debs
 Packages="python abe" #packages should be space seperated, no commas
 echo "Waiting for dpkg unlock."
-/mnt/hgfs/files/dpkg-check.sh
+$fileDir/dpkg-check.sh
 #add "| sed 's///g'" to replace virtual packages below
 apt download $(apt-rdepends $Packages | grep "^\w" | sed 's/debconf-2.0/debconf/g' | sed 's/libjack-0.125/libjack0/g' | sed 's/libwayland-egl1$/libwayland-egl1-mesa/g')
 dpkg-scanpackages /var/www/html/debs/ | gzip -9c > /var/www/html/debs/Packages.gz

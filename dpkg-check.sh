@@ -1,5 +1,5 @@
 #!/bin/bash
-
+#basically just waits until no other apt processes are running
 i=0
 tput sc
 while fuser /var/lib/dpkg/lock >/dev/null 2>&1 ; do
